@@ -37,7 +37,6 @@ export default function Home() {
           dispatch(userActions.addUser(data.data));
           const socket = getSocket();
           socket.emit("userID", data.data._id);
-
           navigate("/profile");
           clear();
         } else {

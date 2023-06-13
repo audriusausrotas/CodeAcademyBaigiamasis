@@ -12,6 +12,7 @@ export default function Navigation() {
   );
   const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
+  const [notification, setNotification] = useState(false);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -32,6 +33,17 @@ export default function Navigation() {
   function menuHandler() {
     setOpen((prev) => !prev);
   }
+
+  useEffect(() => {
+    let timeout;
+    const updateNotification = () => {
+      setNotification(user.notifications.length);
+    };
+    timeout = setTimeout(updateNotification, 200);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [user]);
 
   useEffect(() => {
     setSelected(location.pathname);
@@ -68,13 +80,13 @@ export default function Navigation() {
         <div className="relative hover:cursor-pointer" onClick={menuHandler}>
           <MdOutlineNotificationsNone
             size={36}
-            className={`transition-colors duration-500 ${
+            className={`transition-colors duration-0 delay-200	 ${
               user.notifications.length > 0 ? "text-red-500" : "text-black"
             }`}
           />
 
           <div className="absolute text-sm font-bold top-2 left-[14px] ">
-            {user.notifications.length}
+            {notification}
           </div>
 
           {open && (

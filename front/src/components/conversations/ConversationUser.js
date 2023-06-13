@@ -31,7 +31,7 @@ export default function ConversationUser({ item, index }) {
         : item.users[0].username;
     } else {
       return (
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 overflow-hidden">
           {item.users.map((usr) => (
             <div
               key={usr._id}
