@@ -1,15 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 import http from "../../plugins/http";
 import { userActions } from "../../states/user";
+import { conversationActions } from "../../states/conversations";
 
 export default function ConversationUser({ item, index }) {
-  const selected = useSelector((store) => store.user.selected);
+  const selected = useSelector((store) => store.conversation.selected);
   const user = useSelector((store) => store.user.user);
 
   const dispatch = useDispatch();
 
   function clickHandler() {
-    dispatch(userActions.addSelected(index));
+    dispatch(conversationActions.addSelected(index));
   }
 
   function deleteHandler() {
@@ -19,7 +20,7 @@ export default function ConversationUser({ item, index }) {
     };
     http.postAuth("deleteConversation", { ...obj }).then((data) => {
       dispatch(userActions.addUser(data.data.user));
-      dispatch(userActions.deleteConversation(data.data.data._id));
+      dispatch(conversationActions.deleteConversation(data.data.data._id));
     });
   }
 

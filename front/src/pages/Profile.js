@@ -22,13 +22,17 @@ export default function Profile() {
       input.current.value = "";
       return;
     }
+
     http
       .postAuth(`${selected}Change`, {
         newValue: input.current.value,
       })
       .then((data) => {
         if (data.success) {
-          dispatch(userActions.addUser(data.data));
+          dispatch(userActions.addUser(data.data.newUser));
+          if (data.data.token) {
+            localStorage.setItem("token", data.data.token);
+          }
           showSuccess(data.message);
         } else {
           showError(data.message);
@@ -84,6 +88,9 @@ export default function Profile() {
           placeholder={selected}
           className="w-64 p-2 border rounded-md shadow-lg "
           ref={input}
+          onKeyDown={(e) => {
+            e.key === "Enter" && changeHandler();
+          }}
         />
         <button
           className="w-64 p-2 text-lg rounded-md shadow-lg hover:bg-slate-400 hover:text-white bg-slate-100"

@@ -3,10 +3,13 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { userActions } from "../../states/user";
 import { useEffect, useState } from "react";
 import { MdOutlineNotificationsNone } from "react-icons/md";
+import { conversationActions } from "../../states/conversations";
 
 export default function Navigation() {
   const user = useSelector((state) => state.user.user);
-  const conversations = useSelector((store) => store.user.conversations);
+  const conversations = useSelector(
+    (store) => store.conversation.conversations
+  );
   const [selected, setSelected] = useState("");
   const [open, setOpen] = useState(false);
 
@@ -22,7 +25,7 @@ export default function Navigation() {
 
   function navigateHandler(e) {
     const temp = conversations.findIndex((item) => item._id === e.target.id);
-    dispatch(userActions.addSelected(temp));
+    dispatch(conversationActions.addSelected(temp));
     navigate("/conversations");
   }
 

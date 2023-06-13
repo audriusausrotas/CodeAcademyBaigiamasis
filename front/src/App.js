@@ -10,13 +10,16 @@ import { io } from "socket.io-client";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "./states/user";
+import { conversationActions } from "./states/conversations";
 
 const socket = io("http://localhost:4000");
 let active = [];
 
 export default function App() {
   const dispatch = useDispatch();
-  const conversations = useSelector((store) => store.user.conversations);
+  const conversations = useSelector(
+    (store) => store.conversation.conversations
+  );
 
   useEffect(() => {
     socket.on("newUser", (data) => {
@@ -32,21 +35,21 @@ export default function App() {
     });
 
     socket.on("likeMessage", (data) => {
-      dispatch(userActions.likeMessage(data));
+      dispatch(conversationActions.likeMessage(data));
     });
 
     socket.on("newMessage", (data) => {
-      dispatch(userActions.newMessage(data.data));
+      dispatch(conversationActions.newMessage(data.data));
       dispatch(userActions.addUser(data.receiver));
     });
 
     socket.on("deleteConversation", (data) => {
-      dispatch(userActions.deleteConversation(data._id));
+      dispatch(conversationActions.deleteConversation(data._id));
       dispatch(userActions.addUser(data.user));
     });
 
     socket.on("updateInvited", (data) => {
-      dispatch(userActions.addUserToConversation(data));
+      dispatch(conversationActions.addUserToConversation(data));
     });
   }, []);
   ////////////////////////////////////////////////////////////////

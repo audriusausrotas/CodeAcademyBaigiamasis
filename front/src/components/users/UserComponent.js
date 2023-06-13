@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import http from "../../plugins/http";
 import { useGetUser } from "../../plugins/getUsers";
 import { useDispatch } from "react-redux";
-import { userActions } from "../../states/user";
+import { conversationActions } from "../../states/conversations";
 
 export default function UserComponent() {
   const [success, setSuccess] = useState("");
@@ -30,7 +30,7 @@ export default function UserComponent() {
       if (data.success) {
         showSuccess();
         message.current.value = "";
-        dispatch(userActions.newMessage(data.data));
+        dispatch(conversationActions.newMessage(data.data));
       }
     });
   }
@@ -68,6 +68,9 @@ export default function UserComponent() {
           rows="5"
           className="p-4 border rounded-md shadow-lg outline-none resize-none bg-slate-50"
           ref={message}
+          onKeyDown={(e) => {
+            e.key === "Enter" && sendHandler();
+          }}
         />
         <button
           className="w-full p-2 text-lg rounded-md shadow-lg hover:bg-slate-400 hover:text-white bg-slate-200"

@@ -7,6 +7,10 @@ const conversationSlice = createSlice({
     conversations: [],
   },
   reducers: {
+    addSelected(state, action) {
+      state.selected = action.payload;
+    },
+
     addConversations(state, action) {
       state.conversations = action.payload;
     },

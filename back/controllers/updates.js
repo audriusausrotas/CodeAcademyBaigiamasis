@@ -1,6 +1,7 @@
 const userSchema = require("../schemas/userSchema");
 const response = require("../modules/response");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 const io = require("../sockets/main");
 
 module.exports = {
@@ -19,7 +20,7 @@ module.exports = {
 
     io.emit("userUpdate", newUser);
 
-    return response(res, true, newUser, "avatar updated");
+    return response(res, true, { newUser }, "avatar updated");
   },
 
   ///////////////////////////////////////////////////////////////////
@@ -32,8 +33,6 @@ module.exports = {
       return response(res, false, null, "Username already exist");
     }
 
-    newUser.password = "";
-
     const newUser = await userSchema.findOneAndUpdate(
       { _id },
       {
@@ -42,9 +41,14 @@ module.exports = {
       { new: true }
     );
 
+    const token = jwt.sign(
+      { id: newUser._id, username: newUser.username },
+      process.env.TOKEN_SECRET
+    );
+
     io.emit("userUpdate", newUser);
 
-    return response(res, true, newUser, "username updated");
+    return response(res, true, { newUser, token }, "username updated");
   },
 
   ///////////////////////////////////////////////////////////////////
@@ -61,7 +65,7 @@ module.exports = {
 
     newUser.password = "";
 
-    return response(res, true, newUser, "password updated");
+    return response(res, true, { newUser }, "password updated");
   },
 
   ///////////////////////////////////////////////////////////////////

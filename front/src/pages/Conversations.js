@@ -8,12 +8,15 @@ import { userActions } from "../states/user";
 import Sidebar from "../components/conversations/Sidebar";
 import { BsCaretLeftSquareFill } from "react-icons/bs";
 import { BsCaretRightSquareFill } from "react-icons/bs";
+import { conversationActions } from "../states/conversations";
 
 export default function Conversations() {
   useGetUser("conversations");
 
-  const conversations = useSelector((store) => store.user.conversations);
-  const selected = useSelector((store) => store.user.selected);
+  const conversations = useSelector(
+    (store) => store.conversation.conversations
+  );
+  const selected = useSelector((store) => store.conversation.selected);
   const user = useSelector((store) => store.user.user);
 
   const [showSide, setShowSide] = useState(false);
@@ -40,7 +43,7 @@ export default function Conversations() {
     http.postAuth("sendMessage", options).then((data) => {
       if (data.success) {
         message.current.value = "";
-        dispatch(userActions.newMessage(data.data));
+        dispatch(conversationActions.newMessage(data.data));
       }
     });
   }

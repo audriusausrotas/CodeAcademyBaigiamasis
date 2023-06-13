@@ -12,7 +12,6 @@ module.exports = {
         return response(res, false, null, userOk);
       }
     }
-
     if (pass2 && pass1 !== pass2) {
       return response(res, false, null, "Passwords doesn't match");
     }
@@ -22,13 +21,13 @@ module.exports = {
       if (passOk !== "ok") {
         return response(res, false, null, passOk);
       }
-
+      console.log(pass1);
       if (checkPasswordSymbols(pass1)) {
-        next();
       } else {
-        return response(res, false, null, "Password must have special symbol");
+        return response(res, false, null, "Add special symbol");
       }
     }
+    next();
   },
 };
 

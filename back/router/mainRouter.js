@@ -18,7 +18,6 @@ router.post("/avatarChange", userCheck, updates.updateAvatar);
 router.post(
   "/usernameChange",
   userCheck,
-  updateHelper.username,
   inputVerification.checkAll,
   updates.updateUsername
 );

@@ -4,8 +4,10 @@ import http from "../../plugins/http";
 
 export default function Sidebar({ showSide }) {
   const users = useSelector((store) => store.user.users);
-  const selected = useSelector((store) => store.user.selected);
-  const conversations = useSelector((store) => store.user.conversations);
+  const selected = useSelector((store) => store.conversation.selected);
+  const conversations = useSelector(
+    (store) => store.conversation.conversations
+  );
   const input = useRef();
 
   const [filtererUsers, setFilteredUsers] = useState([]);
@@ -123,6 +125,9 @@ export default function Sidebar({ showSide }) {
             className={`transition-all text-xl font-semibold border-b bg-slate-50 ${
               showInput ? "h-12 p-2" : "h-0 p-0"
             }`}
+            onKeyDown={(e) => {
+              e.key === "Enter" && inviteHandler();
+            }}
           />
           <div className="p-2 text-xl text-red-800 capitalize">{error}</div>
         </div>
